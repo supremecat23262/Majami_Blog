@@ -96,7 +96,7 @@ footer {
 </head>
 <body>
     <header>
-        <h1><a href= "{{ url_for('inicio') }}"><button type="submit">                
+        <a href="{{ url_for('inicio') }}"><img src="/static/logo3.webp" alt="Logo"></a>
             {% for imagen in iconos %}
                 {% if imagen[0] == 1 %}
                     {{ imagen[] }}

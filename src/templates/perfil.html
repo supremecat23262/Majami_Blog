@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Usuario - Majami</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for("static", filename="index.css") }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('registradoinicio') }}"><img src="/static/logo3.webp" alt="Logo"></a>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('registradoinicio') }}">Inicio</a></li>
+                <li><a href="{{ url_for('registradoblog') }}">Blog</a></li>
+                <li><a href="{{ url_for('perfil') }}">Perfil</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+                <!-- Tabla -->
+
+                <table class="table table-bordered">
+                    <Thead>
+                        <th scope="col">#</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Apellido_Paterno</th>
+                        <th scope="col">Apellido_Materno</th>
+                        <th scope="col">Cumpleanos</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </Thead>
+            
+                    <tbody>
+                        {% for d in data %}
+                            <tr>
+                                <td>{{d.id}}</td>
+                                <td>{{d.correo}}</td>
+                                <td>{{d.name}}</td>
+                                <td>{{d.apellidoPat}}</td>
+                                <td>{{d.apellidoMat}}</td>
+                                <td>{{d.cumpleanos}}</td>
+                                <td>{{d.telefono}}</td>
+                                <td>{{d.password}}</td>
+                                <td><button class="btn btn-primary btn-sm" id="btn-edit{{d.id}}" data-bs-toggle="modal" data-bs-target="#modal{{d.id}}">Edit</button></td>
+                                <td><a href="{{url_for("delete",id=d.id)}}" class ="btn btn-danger btn-sm">Delete</td>
+                            </tr>
+
+                            <!--modal-->
+
+                            <div class="modal fade" id="modal{{d.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{d.correo}}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/edit/{{d.id}}" method="post" >
+                                                <label>Correo</label>
+                                                <input type="text" class="form-control mb-3" name="correo" value="{{d.correo}}">
+                                                <label>Name</label>
+                                                <input type="text" class="form-control mb-3" name="name" value="{{d.name}}">
+                                                <label>Apellido_Paterno</label>
+                                                <input type="text" class="form-control mb-3" name="apellidoPat" value="{{d.apellidoPat}}">
+                                                <label>Apellido_Materno</label>
+                                                <input type="text" class="form-control mb-3" name="apellidoMat" value="{{d.apellidoMat}}">
+                                                <label>Cumpleanos</label>
+                                                <input type="date" class="form-control mb-3" name="cumpleanos" value="{{d.cumpleanos}}">
+                                                <label>Telefono</label>
+                                                <input type="tel" class="form-control mb-3" name="telefono" value="{{d.telefono}}">
+                                                <label>Password</label>
+                                                <input type="text" class="form-control mb-3" name="password" value="{{d.password}}">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </tbody>
+                </table>    
+    <footer>
+        <p>&copy; 2023 Mi Blog</p>
+    </footer>
+</body>
+</html>

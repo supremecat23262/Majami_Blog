@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Majami</title>
+    <link rel="stylesheet" href="{{ url_for("static", filename="index.css") }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('inicio') }}"><img src="/static/logo3.webp" alt="Logo"></a>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('inicio') }}">Inicio</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="login-form">
+        <h2>Iniciar Sesión</h2>
+        <form action="/login" method="POST">
+            <label for="correo">Correo electrónico:</label>
+            <input type="text" id="correo" name="correo" required>
+            
+            <label for="password">Contraseña:</label>
+            <input type="text" id="password" name="password" required>
+            
+            <button type="submit">Iniciar Sesión</button>
+            
+            <p>Si aun no tienes una cuenta <a href= "{{ url_for('addUser') }}"> Registrate</a></p>
+        </form>
+    </section>
+    <footer>
+        <p>&copy; 2023 Majami</p>
+    </footer>
+</body>
+
+</html>

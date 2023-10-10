@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Majami - Blogs</title>
+    <link rel="stylesheet" href="{{ url_for("static", filename="index.css") }}">
+
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('inicio') }}"><img src="/static/logo3.webp" alt="Logo"></a>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('inicio') }}">Inicio</a></li>
+                <li><a href="{{ url_for('blog') }}">Blog</a></li>
+                <li><a href="{{ url_for('addUser') }}">Registro</a></li>
+                <li><a href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="blog-list">
+        <article class="post">
+            <h3>Título de la Publicación 1</h3>
+            <p class="post-meta">Fecha: 22 de septiembre de 2023</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam a velit nec justo tristique ultricies. Nulla facilisi. Fusce suscipit auctor ex, in semper arcu posuere vel.</p>
+            <a href="post.html">Leer más</a>
+        </article>
+        
+        <!-- Repite este artículo para más publicaciones -->
+        
+        <article class="post">
+            <h3>Título de la Publicación 2</h3>
+            <p class="post-meta">Fecha: 20 de septiembre de 2023</p>
+            <p>Phasellus nec tortor velit. Aenean tincidunt lacus sit amet dui iaculis, sed consectetur metus venenatis.</p>
+            <a href="post.html">Leer más</a>
+        </article>
+    </section>
+    
+    <footer>
+        <p>&copy; 2023 Majami</p>
+    </footer>
+</body>
+</html>

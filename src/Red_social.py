@@ -2,6 +2,7 @@ from flask import Flask,flash, render_template, request,redirect, redirect, url_
 from flask_mail import Mail, Message
 import os
 import io
+from itsdangerous import URLSafeTimedSerializer
 import database as db
 
 #Declarar una variables donde estará nuestra carpeta principal  "Prueba flask"
@@ -66,7 +67,7 @@ def home():
 #-----------Esta es la renderizacion de todo-----------------------#
     return render_template ('index.html', data=insertObject, data2=insertObject2, imagenes=imagenes)
 
-#--------------VERIFICACION DE CORREO Y LOGIN--------------------------#
+# ------------VERIFICACION DE CORREO Y LOGIN--------------------------#
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -94,12 +95,12 @@ def login():
             flash('Credenciales incorrectas', 'error')
 
     return render_template('login.html')
-#----------------Lógica para ingreso de datos de usuario---------------#
-#Ruta para guardar usurarios en la base de datos
+
+# ----------------Lógica para ingreso de datos de usuario---------------#
+# Ruta para guardar usurarios en la base de datos
 @app.route('/addUser', methods=['GET', 'POST'])
 def addUser():
     if request.method == 'POST':
-        
         name = request.form["name"]
         apellido_paterno = request.form["apellido_paterno"]
         apellido_materno = request.form["apellido_materno"]
@@ -109,16 +110,46 @@ def addUser():
         username = request.form["username"]
         password = request.form["password"]
 
-        if username and name and password:
-            cursor= db.database.cursor()
+        cursor = db.database.cursor()
+        # Verificar si el correo ya existe en la base de datos
+        cursor.execute("SELECT id FROM users WHERE correo = %s", (correo,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            flash('Este correo ya está registrado. Por favor, usa otro correo para registrarte.', 'error')
+        elif username and name and password:
             sql = "INSERT INTO users (name, apellido_paterno, apellido_materno, telefono, cumpleanos, correo, username, password ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
             data = (name, apellido_paterno, apellido_materno, telefono, cumpleanos, correo, username, password)
-            cursor.execute(sql,data)
+            cursor.execute(sql, data)
             db.database.commit()
-        return render_template('index_usuario.html')
-    
+
+            # Envío de correo de confirmación
+            serializer = URLSafeTimedSerializer(app.secret_key)
+            confirmation_token = serializer.dumps(correo, salt='email-confirm-key')
+            confirmation_link = url_for('confirm_account', token=confirmation_token, _external=True)
+            msg = Message('Confirma tu cuenta', sender='tu_correo@gmail.com', recipients=[correo])
+            msg.body = f'Por favor, haz clic en el siguiente enlace para confirmar tu cuenta: {confirmation_link}'
+            mail.send(msg)
+
+            flash('Se ha enviado un correo de confirmación a tu dirección. Por favor, verifica tu correo para activar tu cuenta.', 'success')
+
     return render_template('registro.html')
 
+# Ruta para confirmar la cuenta
+@app.route('/confirm/<token>', methods=['GET'])
+def confirm_account(token):
+    try:
+        serializer = URLSafeTimedSerializer(app.secret_key)
+        correo = serializer.loads(token, salt='email-confirm-key', max_age=3600)  # El token es válido durante 1 hora
+
+        # Marcar la cuenta como confirmada en tu base de datos (por ejemplo, estableciendo un campo "confirmado" en la tabla de usuarios)
+
+        flash('Tu cuenta ha sido confirmada con éxito. Ahora puedes iniciar sesión.', 'success')
+        return redirect(url_for('login'))
+
+    except BadSignature:
+        flash('El enlace de confirmación es inválido o ha caducado.', 'error')
+        return redirect(url_for('login'))
 #Ruta para renderizar la pagina de perfil
 @app.route('/perfil', methods=['GET'])
 def perfil():   

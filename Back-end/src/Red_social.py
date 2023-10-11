@@ -3,9 +3,6 @@ from flask_mail import Mail, Message
 import os
 import io
 import database as db
-import mysql.connector
-import time
-from flask_caching import Cache
 
 #Declarar una variables donde estará nuestra carpeta principal  "Prueba flask"
 template_dir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
@@ -14,9 +11,6 @@ template_dir = os.path.join(template_dir, 'src' ,  'templates')
 
 #Una varaibles para inicializar flask  
 app = Flask(__name__, template_folder = template_dir)
-
-#Usa una caché simple en memoria
-cache = Cache(app, config={'CACHE_TYPE': 'simple'})  
 
 #------------configuracion de correos-------------#
 app.config.update(dict(                     #
@@ -68,13 +62,9 @@ def home():
     cursor3.execute("SELECT id, nombre FROM imagenes")
     imagenes = cursor3.fetchall()
     cursor3.close()
-#-----------SUBIDA DE ICONOS INICIALIZACION-------------#
-    cursor4 = db.database.cursor()
-    cursor4.execute("SELECT id, nombre FROM iconos")
-    iconos = cursor4.fetchall()
-    cursor4.close()
+
 #-----------Esta es la renderizacion de todo-----------------------#
-    return render_template ('index.html', data=insertObject, data2=insertObject2, imagenes=imagenes, iconos=iconos)
+    return render_template ('index.html', data=insertObject, data2=insertObject2, imagenes=imagenes)
 
 #--------------VERIFICACION DE CORREO Y LOGIN--------------------------#
 @app.route('/login', methods=['GET', 'POST'])
@@ -99,7 +89,7 @@ def login():
             mail.send(msg)
 
             flash('Inicio de sesión exitoso', 'success')
-            return redirect(url_for('home'))
+            return render_template('index_usuario.html')
         else:
             flash('Credenciales incorrectas', 'error')
 
@@ -125,19 +115,34 @@ def addUser():
             data = (name, apellido_paterno, apellido_materno, telefono, cumpleanos, correo, username, password)
             cursor.execute(sql,data)
             db.database.commit()
-        return redirect(url_for("home"))
+        return render_template('index_usuario.html')
     
     return render_template('registro.html')
+
+#Ruta para renderizar la pagina de perfil
+@app.route('/perfil', methods=['GET'])
+def perfil():   
+    return render_template('perfil.html')
 
 #Ruta para renderizar la pagina de blog
 @app.route('/blog', methods=['GET'])
 def blog():   
     return render_template('blog.html')
 
+#Ruta para renderizar la pagina de blog registrado
+@app.route('/registradoblog', methods=['GET'])
+def registradoblog():   
+    return render_template('blog_usuario.html')
+
 #Ruta para renderizar la pagina de home
 @app.route('/inicio', methods=['GET'])
 def inicio():   
     return render_template('index.html')
+
+#Ruta para renderizar la pagina de home registrado
+@app.route('/registradoinicio', methods=['GET'])
+def registradoinicio():   
+    return render_template('index_usuario.html')
 
 #Ruta para eliminar los datos de los usurarios en la base de datos
 @app.route("/delete/<string:id>")
@@ -177,11 +182,12 @@ def add_article():
     
     if title and content:
         cursor2 = db.database.cursor()
-        sql2  = "INSERT INTO articles (title, content) VALUES (%s, %s)"
+        sql2 = "INSERT INTO articles (title, content) VALUES (%s, %s)"
         data2 = (title, content)
         cursor2.execute(sql2, data2)
         db.database.commit()
-    return redirect(url_for("home"))
+    
+    return render_template('index_usuario.html')
 
 # Ruta para eliminar artículos de la base de datos
 @app.route("/delete_article/<string:id>")
@@ -191,7 +197,7 @@ def delete_article(id):
     data2 = (id,)
     cursor2.execute(sql2, data2)
     db.database.commit()
-    return redirect(url_for("home"))
+    return render_template('index_usuario.html')
 
 # Ruta para editar artículos en la base de datos
 @app.route("/edit_article/<string:id>", methods=['POST'])
@@ -205,31 +211,29 @@ def edit_article(id):
         data2 = (title, content, id)
         cursor2.execute(sql2, data2)
         db.database.commit()
-    return redirect(url_for("home"))
+    
+    return render_template('index_usuario.html')
 
-#---------SUBIR iconos-----------#  
-
+#---------SUBIR IMAGEN-----------#
 @app.route('/subir', methods=['POST'])
 def subir_imagen():
     if request.method == 'POST':
-        nombres = request.form.getlist('nombre')
-        imagenes = request.files.getlist('imagen')
+        imagen = request.files['imagen']
+        nombre = request.form['nombre']
 
-        for nombre, imagen in zip(nombres, imagenes):
-            if imagen:
-                cursor4 = db.database.cursor()
-                cursor4.execute("INSERT INTO iconos (nombre, imagen) VALUES (%s, %s)", (nombre, imagen.read()))
-                db.database.commit()
-                cursor4.close()
-        
-        return redirect(url_for('home'))
+        if imagen:
+            cursor3 = db.database.cursor()
+            cursor3.execute("INSERT INTO imagenes (nombre, imagen) VALUES (%s, %s)", (nombre, imagen.read()))
+            db.database.commit()
+            cursor3.close()
+            return redirect(url_for('home'))
 
 @app.route('/mostrar/<int:id>')
 def mostrar_imagen(id):
-    cursor4 = db.database.cursor()
-    cursor4.execute("SELECT nombre, imagen FROM iconos WHERE id = %s", (id,))
-    result = cursor4.fetchone()
-    cursor4.close()
+    cursor3 = db.database.cursor()
+    cursor3.execute("SELECT nombre, imagen FROM imagenes WHERE id = %s", (id,))
+    result = cursor3.fetchone()
+    cursor3.close()
 
     if result:
         nombre, imagen_bytes = result
@@ -241,6 +245,6 @@ def mostrar_imagen(id):
         )
     else:
         return "Imagen no encontrada"
-    
+
 if __name__ =='__main__':
     app.run(debug=True, port=400)

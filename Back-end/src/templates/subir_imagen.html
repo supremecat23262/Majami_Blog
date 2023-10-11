@@ -10,37 +10,20 @@
         <input type="text" name="nombre" required>
         <br>
         <label for="imagen">Imagen:</label>
-        <input type="file" name="imagen" accept=".jpg, .png, .jpeg, .svg" multiple required>
+        <input type="file" name="imagen" accept=".jpg, .png, .jpeg" required>
         <br>
         <input type="submit" value="Subir Imagen">
 
     </form>
 
     <h2>Imágenes Subidas:</h2>
-     <!-- Tabla -->
-    {% for imagen in iconos %}
-        {% if imagen[0] == 1 %}
-            {{ imagen[] }}
-            <img src="/mostrar/{{ imagen[0] }}"></img>
-        {% endif %}
-    {% endfor %}
-<br> 
-    {% for imagen in iconos %}
-        {% if imagen[0] == 2 %}
-            {{ imagen[] }}
-            <img src="/mostrar/{{ imagen[0] }}"></img>
-        {% endif %}
-    {% endfor %}
-<br>
+    <ul>
         {% for imagen in iconos %}
+            <li>
                 {{ imagen[1] }}
-                <img src="/mostrar/{{ imagen[0] }}"></img>
+                <img src="/mostrar/{{ imagen[0] }}">Ver Imagen</a>
+            </li>
         {% endfor %}
-<br>
-        {% for imagen in iconos %}
-                {{ imagen[0] }}
-                <img src="/mostrar/{{ imagen[0] }}"></img>
-        {% endfor %}
-<br>
+    </ul>
 </body>
 </html>

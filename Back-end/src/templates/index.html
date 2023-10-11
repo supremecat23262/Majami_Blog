@@ -4,95 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Majami</title>
-
-<style>
-/* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-}
-
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-}
-
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-nav li {
-    display: inline;
-    margin-right: 20px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #fff;
-}
-
-/* Estilos de la sección de introducción */
-.intro {
-    text-align: center;
-    padding: 40px;
-}
-
-/* Estilos de la lista de publicaciones */
-.blog-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 20px;
-}
-
-.post {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 20px;
-    margin-bottom: 20px;
-    width: calc(33.33% - 20px); /* Para tres columnas en pantalla ancha */
-}
-
-.post h3 {
-    margin: 0;
-}
-
-.post p {
-    margin-top: 10px;
-}
-
-.post a {
-    display: block;
-    margin-top: 10px;
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-}
-
-/* Estilos del pie de página */
-footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #333;
-    color: #fff;
-}
-</style>
+    <link rel="stylesheet" href="{{ url_for("static", filename="index.css") }}">
 
 </head>
 <body>
     <header>
-        {% for imagen in iconos %}
-            {% if imagen[0] == 1 %}
-                {{ imagen[] }}
-                <img src="/mostrar/{{ imagen[0] }}"></img>
-            {% endif %}
-        {% endfor %}     
-      <nav>
+        <a href="{{ url_for('inicio') }}"><img src="/static/logo3.webp" alt="Logo"></a>
+        <nav>
             <ul>
                 <li><a href="{{ url_for('inicio') }}">Inicio</a></li>
                 <li><a href="{{ url_for('blog') }}">Blog</a></li>
@@ -103,7 +21,7 @@ footer {
     </header>
     
     <section class="intro">
-        <h2>Bienvenido a Majami</h2>
+        <h1>Bienvenido a Majami</h1>
         <p>Un lugar para compartir tus pensamientos y experiencias.</p>
         <p>Publica lo que quieras y compartelo con el mundo.</p>
         <p><a href= "{{ url_for('login') }}">Inicia sesion</a> o <a href="{{ url_for('addUser') }}">Registrate</a> para comenzar.</p>

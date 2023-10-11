@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Majami - Blogs</title>
+    <link rel="stylesheet" href="{{ url_for("static", filename="index.css") }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('registradoinicio') }}"><img src="/static/logo3.webp" alt="Logo"></a>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('registradoinicio') }}">Inicio</a></li>
+                <li><a href="{{ url_for('registradoblog') }}">Blog</a></li>
+                <li><a href="{{ url_for('perfil') }}">Perfil</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="blog-list">
+        <tbody>
+            {% for d in data2 %}
+                <tr>
+                    <td>{{d.id}}</td>
+                    <td>{{d.title}}</td>
+                    <td>{{d.content}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </section>
+    
+    <footer>
+        <p>&copy; 2023 Majami</p>
+    </footer>
+</body>
+</html>

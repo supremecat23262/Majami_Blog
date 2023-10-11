@@ -1,18 +1,17 @@
 CREATE DATABASE ordinario;
---@block
-DROP DATABASE ordinario;
+
 --@block
 USE ordinario;
 
 --@block
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    correo VARCHAR(30),
-    username VARCHAR(15) NOT NULL,
-    name VARCHAR(20) NOT NULL,
-    apellido_paterno VARCHAR(20),
-    apellido_materno VARCHAR(20),
-    password VARCHAR(15) NOT NULL,
+    correo VARCHAR(100),
+    username VARCHAR(30) NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    apellido_paterno VARCHAR(30),
+    apellido_materno VARCHAR(30),
+    password VARCHAR(30) NOT NULL,
     telefono VARCHAR(15),
     cumpleanos DATE
 );
@@ -27,8 +26,8 @@ CREATE TABLE imagenes (
 --@block
 CREATE TABLE articles (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(40) NOT NULL,
-    content VARCHAR(100) NOT NULL
+    title VARCHAR(100) NOT NULL,
+    content VARCHAR(3000) NOT NULL
 );
 
 --@block
@@ -60,14 +59,10 @@ SELECT * FROM articles;
 DROP TABLE users;
 
 --@block
-Drop table articulo;
+Drop table articles;
 
 --@block
 Drop table iconos;
 
 --@block
 Drop DATABASE ordinario;
---@block
-SHOW VARIABLES LIKE 'have_ssl';
-SHOW VARIABLES LIKE 'ssl_version';
-SHOW VARIABLES LIKE 'require_secure_transport';

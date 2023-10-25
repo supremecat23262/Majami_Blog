@@ -27,7 +27,9 @@ CREATE TABLE imagenes (
 CREATE TABLE articles (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
-    content VARCHAR(3000) NOT NULL
+    content VARCHAR(3000) NOT NULL,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 --@block

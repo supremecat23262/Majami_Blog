@@ -1,9 +1,12 @@
-from flask import Flask,flash, render_template, request,redirect, redirect, url_for, send_file, session
+from flask import Flask, flash, render_template, request, redirect, url_for, send_file, session
 from flask_mail import Mail, Message
 import os
 import io
-from itsdangerous import URLSafeTimedSerializer
+from flask_caching import Cache
+from itsdangerous import URLSafeTimedSerializer, BadSignature
 import database as db
+from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin, current_user
+
 
 #Declarar una variables donde estará nuestra carpeta principal  "Prueba flask"
 template_dir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
@@ -12,6 +15,9 @@ template_dir = os.path.join(template_dir, 'src' ,  'templates')
 
 #Una varaibles para inicializar flask  
 app = Flask(__name__, template_folder = template_dir)
+
+# Configuración de la caché
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 #------------configuracion de correos-------------#
 app.config.update(dict(                     #
@@ -28,45 +34,46 @@ app.config.update(dict(                     #
 mail = Mail(app)
 
 # Configurar la clave secreta para sesiones
-app.secret_key = os.urandom(32)
+app.secret_key = 'Clavesecreta23'
+
 
 #Rutas de la aplicación, se pone / para que con el propio nombre de la app acceda el index
 @app.route('/')
+@cache.cached(timeout=3600)  # Almacena en caché durante 1 hora (ajusta el tiempo según tus necesidades)
 def home():
-    #Crear un cursor apra acceder a la base de datos
-    cursor = db.database.cursor()
-    #Hacer la consulta select
-    cursor.execute("SELECT * FROM users")
-    myresult = cursor.fetchall()
-    #Convertir los datos a diccionario
-    insertObject = []
-    columnNames = [colum[0] for colum in cursor.description]
-    for record in myresult:
-        insertObject.append(dict(zip(columnNames, record)))
-    cursor.close()
+        #Crear un cursor apra acceder a la base de datos
+        cursor = db.database.cursor()
+        #Hacer la consulta select
+        cursor.execute("SELECT * FROM users")
+        myresult = cursor.fetchall()
+        #Convertir los datos a diccionario
+        insertObject = []
+        columnNames = [colum[0] for colum in cursor.description]
+        for record in myresult:
+            insertObject.append(dict(zip(columnNames, record)))
+        cursor.close()
 
-#-----------PUBLICACION INICIALIZACION----------#
-    #Crear un cursor apra acceder a la base de datos
-    cursor2 = db.database.cursor()    
-    #Hacer la consulta select
-    cursor2.execute("SELECT * FROM articles")
-    myresult2 = cursor2.fetchall()
-    #Convertir los datos a diccionario
-    insertObject2 = []
-    columnNames2 = [colum[0] for colum in cursor2.description]
-    for record in myresult2:
-        insertObject2.append(dict(zip(columnNames2, record)))
-    cursor2.close()
+    #-----------PUBLICACION INICIALIZACION----------#
+        #Crear un cursor apra acceder a la base de datos
+        cursor2 = db.database.cursor()    
+        #Hacer la consulta select
+        cursor2.execute("SELECT * FROM articles")
+        myresult2 = cursor2.fetchall()
+        #Convertir los datos a diccionario
+        insertObject2 = []
+        columnNames2 = [colum[0] for colum in cursor2.description]
+        for record in myresult2:
+            insertObject2.append(dict(zip(columnNames2, record)))
+        cursor2.close()
 
-#-----------SUBIDA DE IMAGENES INICIALIZACION-------------#
-    cursor3 = db.database.cursor()
-    cursor3.execute("SELECT id, nombre FROM imagenes")
-    imagenes = cursor3.fetchall()
-    cursor3.close()
+    #-----------SUBIDA DE IMAGENES INICIALIZACION-------------#
+        cursor3 = db.database.cursor()
+        cursor3.execute("SELECT id, nombre FROM imagenes")
+        imagenes = cursor3.fetchall()
+        cursor3.close()
 
-#-----------Esta es la renderizacion de todo-----------------------#
-    return render_template ('index.html', data=insertObject, data2=insertObject2, imagenes=imagenes)
-
+    #-----------Esta es la renderizacion de todo-----------------------#
+        return render_template ('index.html', data=insertObject, data2=insertObject2, imagenes=imagenes)
 # ------------VERIFICACION DE CORREO Y LOGIN--------------------------#
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -80,9 +87,12 @@ def login():
         cursor.execute(sql, data)
         user = cursor.fetchone()
         cursor.close()
-
-        if user:
-            session['user1_id'] = user['id']
+        
+        # Obtén el ID del usuario de la sesión
+        user_id = session.get('user_id')
+        
+        if user is not None:
+            session['user_id'] = user['id']
 
             # Enviar un mensaje de correo electrónico después de iniciar sesión
             msg = Message('Inicio de sesión exitoso', sender='tu_correo@gmail.com', recipients=[user['correo']])
@@ -90,11 +100,27 @@ def login():
             mail.send(msg)
 
             flash('Inicio de sesión exitoso', 'success')
-            return render_template('index_usuario.html')
+            return redirect(url_for('publicaciones'))
         else:
             flash('Credenciales incorrectas', 'error')
 
     return render_template('login.html')
+
+@app.route('/publicaciones')
+def publicaciones():
+    #Crear un cursor apra acceder a la base de datos
+        cursor2 = db.database.cursor()    
+        #Hacer la consulta select
+        cursor2.execute("SELECT * FROM articles")
+        myresult2 = cursor2.fetchall()
+        #Convertir los datos a diccionario
+        insertObject2 = []
+        columnNames2 = [colum[0] for colum in cursor2.description]
+        for record in myresult2:
+            insertObject2.append(dict(zip(columnNames2, record)))
+        cursor2.close()
+        
+        return render_template ('index_usuario.html', data2=insertObject2)
 
 # ----------------Lógica para ingreso de datos de usuario---------------#
 # Ruta para guardar usurarios en la base de datos
@@ -150,6 +176,7 @@ def confirm_account(token):
     except BadSignature:
         flash('El enlace de confirmación es inválido o ha caducado.', 'error')
         return redirect(url_for('login'))
+    
 #Ruta para renderizar la pagina de perfil
 @app.route('/perfil', methods=['GET'])
 def perfil():   
@@ -217,8 +244,8 @@ def add_article():
         data2 = (title, content)
         cursor2.execute(sql2, data2)
         db.database.commit()
-    
-    return render_template('index_usuario.html')
+    cache.clear()
+    return redirect(url_for("publicaciones"))
 
 # Ruta para eliminar artículos de la base de datos
 @app.route("/delete_article/<string:id>")
@@ -228,7 +255,8 @@ def delete_article(id):
     data2 = (id,)
     cursor2.execute(sql2, data2)
     db.database.commit()
-    return render_template('index_usuario.html')
+    cache.clear()
+    return redirect(url_for("home"))
 
 # Ruta para editar artículos en la base de datos
 @app.route("/edit_article/<string:id>", methods=['POST'])
@@ -242,8 +270,8 @@ def edit_article(id):
         data2 = (title, content, id)
         cursor2.execute(sql2, data2)
         db.database.commit()
-    
-    return render_template('index_usuario.html')
+    cache.clear()
+    return redirect(url_for("home"))
 
 #---------SUBIR IMAGEN-----------#
 @app.route('/subir', methods=['POST'])
@@ -276,6 +304,9 @@ def mostrar_imagen(id):
         )
     else:
         return "Imagen no encontrada"
+    
 
+    
+    
 if __name__ =='__main__':
-    app.run(debug=True, port=400)
+    app.run(debug=True, port=4000)

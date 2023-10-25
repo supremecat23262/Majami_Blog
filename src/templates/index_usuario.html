@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Majami</title>
     <link rel="stylesheet" href="{{ url_for("static", filename="index.css") }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script>
+        // Función para abrir la ventana emergente
+        function openPopup() {
+            document.getElementById("popupContainer").style.display = "flex";
+        }
+
+        // Función para cerrar la ventana emergente
+        function closePopup() {
+            document.getElementById("popupContainer").style.display = "none";
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -47,66 +60,60 @@
         </div>
     </div>
 
-    <script>
-        // Función para abrir la ventana emergente
-        function openPopup() {
-            document.getElementById("popupContainer").style.display = "flex";
-        }
+    
+    <div class="container">
+        <div class="card shadow">        
+            <div class="card-body">    <!-- Tabla -->
+                <table class="table table-bordered">
+                    <thead>
+                        <th scope="col">#</th>
+                        <th scope="col">Título</th>
+                        <th scope="col">Contenido</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </thead>
 
-        // Función para cerrar la ventana emergente
-        function closePopup() {
-            document.getElementById("popupContainer").style.display = "none";
-        }
-    </script>
-        
-            <!-- Tabla -->
-            <table class="table table-bordered">
-                <thead>
-                    <th scope="col">#</th>
-                    <th scope="col">Título</th>
-                    <th scope="col">Contenido</th>
-                    <th scope="col">Edit</th>
-                    <th scope="col">Delete</th>
-                </thead>
+                    <tbody>
 
-                <tbody>
-                    {% for d in data2 %}
-                        <tr>
-                            <td>{{d.id}}</td>
-                            <td>{{d.title}}</td>
-                            <td>{{d.content}}</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{d.id}}">Edit</button>
-                            </td>
-                            <td><a href="{{url_for("delete_article", id=d.id)}}" class="btn btn-danger btn-sm">Delete</a></td>
-                        </tr>
+                        <h1>Página de inicio de usuario</h1>
+                        
+                        {% for d in data2 %}
+                            <tr>
+                                <td>{{d.id}}</td>
+                                <td>{{d.title}}</td>
+                                <td>{{d.content}}</td>
+                                <td><button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{d.id}}">Edit</button></td>
+                                <td><a href="{{url_for("delete_article", id=d.id)}}" class="btn btn-danger btn-sm">Delete</a></td>
+                            </tr>
 
-                        <!-- Modal de edición -->
-                        <div class="modal fade" id="modal{{d.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{d.title}}</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="{{url_for('edit_article', id=d.id)}}" method="post">
-                                            <label>Título</label>
-                                            <input type="text" class="form-control mb-3" name="title" value="{{d.title}}">
-                                            <label>Contenido</label>
-                                            <input type="text" class="form-control mb-3" name="content" value="{{d.content}}">
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                            <!-- Modal de edición -->
+                            <div class="modal fade" id="modal{{d.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{d.title}}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{url_for('edit_article', id=d.id)}}" method="post">
+                                                <label>Título</label>
+                                                <input type="text" class="form-control mb-3" name="title" value="{{d.title}}">
+                                                <label>Contenido</label>
+                                                <input type="text" class="form-control mb-3" name="content" value="{{d.content}}">
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                </tbody>
-            </table>
-
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
             <input type="checkbox" id="cookie-accept">
             <div class="cookie-card">
                 <span class="title">🍪 Cookie Notice</span>

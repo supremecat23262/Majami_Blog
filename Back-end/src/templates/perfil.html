@@ -11,10 +11,10 @@
 </head>
 <body>
     <header>
-        <a href="{{ url_for('registradoinicio') }}"><img src="/static/logo3.webp" alt="Logo"></a>
+        <a href="{{ url_for('publicaciones') }}"><img src="/static/logo3.webp" alt="Logo"></a>
         <nav>
             <ul>
-                <li><a href="{{ url_for('registradoinicio') }}">Inicio</a></li>
+                <li><a href="{{ url_for('publicaciones') }}">Inicio</a></li>
                 <li><a href="{{ url_for('registradoblog') }}">Blog</a></li>
                 <li><a href="{{ url_for('perfil') }}">Perfil</a></li>
             </ul>
@@ -27,12 +27,13 @@
                     <Thead>
                         <th scope="col">#</th>
                         <th scope="col">Correo</th>
-                        <th scope="col">Name</th>
+                        <th scope="col">Nombre_de_Usuario</th>
+                        <th scope="col">Nombre</th>
                         <th scope="col">Apellido_Paterno</th>
                         <th scope="col">Apellido_Materno</th>
-                        <th scope="col">Cumpleanos</th>
+                        <th scope="col">Fecha_de_Nacimiento</th>
                         <th scope="col">Telefono</th>
-                        <th scope="col">Password</th>
+                        <th scope="col">Contraseña</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </Thead>
@@ -42,9 +43,10 @@
                             <tr>
                                 <td>{{d.id}}</td>
                                 <td>{{d.correo}}</td>
+                                <td>{{d.username}}</td>
                                 <td>{{d.name}}</td>
-                                <td>{{d.apellidoPat}}</td>
-                                <td>{{d.apellidoMat}}</td>
+                                <td>{{d.apellido_paterno}}</td>
+                                <td>{{d.apellido_materno}}</td>
                                 <td>{{d.cumpleanos}}</td>
                                 <td>{{d.telefono}}</td>
                                 <td>{{d.password}}</td>
@@ -65,17 +67,19 @@
                                             <form action="/edit/{{d.id}}" method="post" >
                                                 <label>Correo</label>
                                                 <input type="text" class="form-control mb-3" name="correo" value="{{d.correo}}">
-                                                <label>Name</label>
+                                                <label>Nombre_de_Usuario</label>
+                                                <input type="text" class="form-control mb-3" name="username" value="{{d.username}}">
+                                                <label>Nombre</label>
                                                 <input type="text" class="form-control mb-3" name="name" value="{{d.name}}">
                                                 <label>Apellido_Paterno</label>
-                                                <input type="text" class="form-control mb-3" name="apellidoPat" value="{{d.apellidoPat}}">
+                                                <input type="text" class="form-control mb-3" name="apellido_paterno" value="{{d.apellido_paterno}}">
                                                 <label>Apellido_Materno</label>
-                                                <input type="text" class="form-control mb-3" name="apellidoMat" value="{{d.apellidoMat}}">
-                                                <label>Cumpleanos</label>
+                                                <input type="text" class="form-control mb-3" name="apellido_materno" value="{{d.apellido_materno}}">
+                                                <label>Fecha_de_Nacimiento</label>
                                                 <input type="date" class="form-control mb-3" name="cumpleanos" value="{{d.cumpleanos}}">
                                                 <label>Telefono</label>
                                                 <input type="tel" class="form-control mb-3" name="telefono" value="{{d.telefono}}">
-                                                <label>Password</label>
+                                                <label>Contraseña</label>
                                                 <input type="text" class="form-control mb-3" name="password" value="{{d.password}}">
                                         </div>
                                         <div class="modal-footer">
@@ -87,7 +91,8 @@
                             </div>
                         {% endfor %}
                     </tbody>
-                </table>    
+                </table>
+                <a href="{{ url_for('cerrar_sesion') }}">Cerrar_Sesion</a>    
     <footer>
         <p>&copy; 2023 Mi Blog</p>
     </footer>

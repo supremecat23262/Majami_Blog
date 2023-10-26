@@ -22,35 +22,35 @@
                     <div class="row mb-3"> 
                         <div class="col">
                             <label>Nombre</label>
-                            <input type="text" class="form-control mb-3" name="name">
+                            <input type="text" class="form-control mb-3" name="name" required>
                         </div>
                         <div class="col">
                             <label>Apellido Paterno</label>
-                            <input type="text" class="form-control mb-3" name="apellido_paterno">
+                            <input type="text" class="form-control mb-3" name="apellido_paterno" required>
                         </div>
                         <div class="col">
                             <label>Apellido Materno</label>
-                            <input type="text" class="form-control mb-3" name="apellido_materno">
+                            <input type="text" class="form-control mb-3" name="apellido_materno" required>
                         </div>
                         <div class="col">
                             <label>Telefono</label>
-                            <input type="tel" class="form-control mb-3" name="telefono">
+                            <input type="tel" class="form-control mb-3" name="telefono" required>
                         </div>
                         <div class="col">
                             <label>Cumpleaños</label>
-                            <input type="date" class="form-control mb-3" name="cumpleanos">
+                            <input type="date" class="form-control mb-3" name="cumpleanos" required>
                         </div>
                         <div class="col">
                             <label>Correo</label>
-                            <input type="text" class="form-control mb-3" name="correo">
+                            <input type="text" class="form-control mb-3" name="correo" required>
                         </div>
                         <div class="col">
                             <label>Username</label>
-                            <input type="text" class="form-control mb-3" name="username">
+                            <input type="text" class="form-control mb-3" name="username" required>
                         </div>
                         <div class="col">
                             <label>Contraseña</label>
-                            <input type="text" class="form-control mb-3" name="password">
+                            <input type="text" class="form-control mb-3" name="password" required>
                         </div>
                         <div class="col">
                             <button class="btn btn-primary mb-3 mt-4" type="submit">Registrate</button>
@@ -59,8 +59,17 @@
 
                     <p>Si ya tienes una cuenta <a href= "{{ url_for('login') }}">Inicia sesion</a></p>
                 </form>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flash-messages">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
     </section>
-    
+        
     <footer>
         <p>&copy; 2023 Majami</p>
     </footer>

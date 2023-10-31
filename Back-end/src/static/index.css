@@ -7,7 +7,7 @@
         }
         
         header {
-            background-color: #010101;
+            background-color: #333;
             color: #fff;
             padding: 20px;
             text-align: center;
@@ -274,294 +274,52 @@
     display: none;
   }
 
-/*estilos presentacion */
-.parent {
-    height: 500px;
-    perspective: 10000px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .card {
-    height: 100%;
-    border-radius: 50px;
-    background: linear-gradient(135deg, rgb(0, 255, 214) 0%, rgb(8, 226, 96) 100%);
-    transition: all 0.5s ease-in-out;
-    transform-style: preserve-3d;
-  }
-  
-  .glass {
-    transform-style: preserve-3d;
-    position: absolute;
-    inset: 8px;
-    border-radius: 55px;
-    border-top-right-radius: 100%;
-    background: linear-gradient(0deg, rgba(255, 255, 255, 0.349) 0%, rgba(255, 255, 255, 0.815) 100%);
-    transform: translate3d(0px, 0px, 25px);
-    border-left: 1px solid white;
-    border-bottom: 1px solid white;
-    transition: all 0.5s ease-in-out;
-  }
-  
-  .content {
-    padding: 100px 60px 0px 30px;
-    transform: translate3d(0, 0, 26px);
-  }
-  
-  .content .title {
+/* Estilos de los formularios de registro e inicio de sesión */
+.register-form,
+.login-form {
+    background-color: #fff;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 30px;
+}
+
+.register-form h2,
+.login-form h2 {
+    text-align: center;
+}
+
+.register-form label,
+.login-form label {
     display: block;
-    color: #00894d;
-    font-weight: 900;
-    font-size: 40px;
-  }
-  
-  .content .text {
-    display: block;
-    color: rgba(0, 137, 78, 0.7647058824);
-    font-size: 25px;
-    margin-top: 20px;
-  }
-  
-  .logo {
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform-style: preserve-3d;
-  }
-  
-  .logo .circle {
-    display: block;
-    position: absolute;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    top: 0;
-    right: 0;
-    box-shadow: rgba(100, 100, 111, 0.2) -10px 10px 20px 0px;
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-    background: rgba(0, 249, 203, 0.2);
-    transition: all 0.5s ease-in-out;
-  }
-  
-  .logo .circle1 {
-    width: 170px;
-    transform: translate3d(0, 0, 20px);
-    top: 8px;
-    right: 8px;
-  }
-  
-  .logo .circle2 {
-    width: 140px;
-    transform: translate3d(0, 0, 40px);
-    top: 10px;
-    right: 10px;
-    -webkit-backdrop-filter: blur(1px);
-    backdrop-filter: blur(1px);
-    transition-delay: 0.4s;
-  }
-  
-  .logo .circle3 {
-    width: 110px;
-    transform: translate3d(0, 0, 60px);
-    top: 17px;
-    right: 17px;
-    transition-delay: 0.8s;
-  }
-  
-  .logo .circle4 {
-    width: 80px;
-    transform: translate3d(0, 0, 80px);
-    top: 23px;
-    right: 23px;
-    transition-delay: 1.2s;
-  }
-  
-  .logo .circle5 {
-    width: 50px;
-    transform: translate3d(0, 0, 100px);
-    top: 30px;
-    right: 30px;
-    display: grid;
-    place-content: center;
-    transition-delay: 1.6s;
-  }
-  
-  .parent:hover .card {
-    transform: rotate3d(1, 1, 0, 30deg);
-    box-shadow: rgba(5, 71, 17, 0.3) 30px 50px 25px -40px, rgba(5, 71, 17, 0.1) 0px 25px 30px 0px;
-  }
-  
-  .parent:hover .card .logo .circle2 {
-    transform: translate3d(0, 0, 60px);
-  }
-  
-  .parent:hover .card .logo .circle3 {
-    transform: translate3d(0, 0, 80px);
-  }
-  
-  .parent:hover .card .logo .circle4 {
-    transform: translate3d(0, 0, 100px);
-  }
-  
-  .parent:hover .card .logo .circle5 {
-    transform: translate3d(0, 0, 120px);
-  }
-
-/*Estilo para login y registro*/
-.space {
-  background-image: linear-gradient(to right, #24272b, #4a525a);
-  display: block;
-  padding-block: 2rem;
-  min-height: 80vh;
+    margin-bottom: 10px;
 }
 
-.form {
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 350px;
-  padding: 20px;
-  border-radius: 20px;
-  position: relative;
-  background-color: #1a1a1a;
-  color: #fff;
-  border: 1px solid #333;
+.register-form input,
+.login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
 }
 
-.titlelogin {
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: -1px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding-left: 30px;
-  color: #00bfff;
+.register-form button,
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
-.titlelogin::before {
-  width: 18px;
-  height: 18px;
-}
-
-.titlelogin::after {
-  width: 18px;
-  height: 18px;
-  animation: pulse 1s linear infinite;
-}
-
-.titlelogin::before,
-.titlelogin::after {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  left: 0px;
-  background-color: #00bfff;
-}
-
-.message, 
-.signin {
-  font-size: 14.5px;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.signin {
-  text-align: center;
-}
-
-.signin a:hover {
-  text-decoration: underline royalblue;
-}
-
-.signin a {
-  color: #00bfff;
-}
-
-.flex {
-  display: flex;
-  width: 100%;
-  gap: 0.5rem;
-}
-
-.form label {
-  position: relative;
-  display: flex;
-  font-size:small;
-}
-
-.input-down-box {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.form label .input {
-  background-color: #333;
-  color: #fff;
-  width: 100%;
-  padding: 20px 05px 05px 10px;
-  outline: 0;
-  border: 1px solid rgba(105, 105, 105, 0.397);
-  border-radius: 10px;
-}
-
-.form label .input + span {
-  color: rgba(255, 255, 255, 0.5);
-  position: absolute;
-  left: 10px;
-  top: 0px;
-  font-size: 0.9em;
-  cursor: text;
-  transition: 0.3s ease;
-}
-
-.form label .input:placeholder-shown + span {
-  top: 12.5px;
-  font-size: 0.9em;
-}
-
-.form label .input:focus + span,
-.form label .input:valid + span {
-  color: #00bfff;
-  top: 0px;
-  font-size: 0.7em;
-  font-weight: 600;
-}
-
-.input {
-  font-size: medium;
-}
-
-.submit {
-  border: none;
-  outline: none;
-  padding: 10px;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 16px;
-  transform: .3s ease;
-  background-color: #00bfff;
-}
-
-.submit:hover {
-  background-color: #00bfff96;
-}
-
-@keyframes pulse {
-  from {
-    transform: scale(0.9);
-    opacity: 1;
-  }
-
-  to {
-    transform: scale(1.8);
-    opacity: 0;
-  }
+.register-form button:hover,
+.login-form button:hover {
+    background-color: #555;
 }
 
 

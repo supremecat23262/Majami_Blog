@@ -15,21 +15,68 @@
             </ul>
         </nav>
     </header>
-    
-    <section class="login-form">
-        <h2>Iniciar Sesión</h2>
-        <form action="/login" method="POST">
-            <label for="correo">Correo electrónico:</label>
-            <input type="text" id="correo" name="correo" required>
+    <section class="space">
+
+        <article class="form">
+            <form action="/login" method="POST">
+                <p class="titlelogin">Registrate</p>
+                <p class="message">Registrate para tener acceso</p>
+                    <div class="flex">
+                    <label>
+                        <input class="input" type="text" placeholder="" name="name" required>
+                        <span>Nombre</span>
+                    </label>
             
-            <label for="password">Contraseña:</label>
-            <input type="text" id="password" name="password" required>
-            
-            <button type="submit">Iniciar Sesión</button>
-            
-            <p>Si aun no tienes una cuenta <a href= "{{ url_for('addUser') }}"> Registrate</a></p>
-        </form>
+                    <label>
+                        <input class="input" type="text" placeholder="" name="apellido_paterno" required>
+                        <span>Apellido paterno</span>
+                    </label>
+                    
+                    <label>
+                        <input class="input" type="text" placeholder="" name="apellido_materno" required>
+                        <span>Apellido materno</span>
+                    </label>
+        
+                    <label>
+                        <input class="input" type="tel" placeholder="" name="telefono" required>
+                        <span>Telefono</span>
+                    </label>
+                    </div>  
+                    <div class="input-down-box">
+                        <label>
+                            <input class="input" type="email" placeholder="" name="correo" required>
+                            <span>Correo electrónico</span>
+                        </label> 
+                            
+                        <label>
+                            <input class="input" type="date" placeholder="" name="cumpleanos" required>
+                            <span>Fecha de nacimiento</span>
+                        </label>
+                        <label>
+                            <input class="input" type="text" placeholder="" name="username" required>
+                            <span>Nombre de usuario</span>
+                        </label>
+                        <label>
+                            <input class="input" type="password" placeholder="" name="password" required>
+                            <span>Contraseña</span>
+                        </label>
+                        <button class="submit">Registrate</button>
+                        <p class="signin">Already have an acount ? <a href="#">Signin</a> </p>
+                    </div>
+                        
+            </form>
+        </article>
     </section>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flash-messages">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
     <footer>
         <p>&copy; 2023 Majami</p>
     </footer>

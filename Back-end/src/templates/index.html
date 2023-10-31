@@ -21,11 +21,24 @@
     </header>
     
     <section class="intro">
-        <h1>Bienvenido a Majami</h1>
-        <p>Un lugar para compartir tus pensamientos y experiencias.</p>
-        <p>Publica lo que quieras y compartelo con el mundo.</p>
-        <p>Por favor, inicia sesión para ver más contenido.</p>
-        <p><a href= "{{ url_for('login') }}">Inicia sesion</a> o <a href="{{ url_for('addUser') }}">Registrate</a> para comenzar.</p>
+        <div class="parent">
+            <div class="card">
+                <div class="logo">
+                    <span class="circle circle1"></span>
+                    <span class="circle circle2"></span>
+                    <span class="circle circle3"></span>
+                    <span class="circle circle4"></span>
+                    <span class="circle circle5"></span>
+                </div>
+                <div class="glass"></div>
+                <div class="content">
+                    <span class="title">Bienvenido a MAJAMI</span>
+                    <span class="text">Un lugar para compartir tus pensamientos y experiencias</span>
+                    <span class="text">Publica lo que quieras y compartelo con el mundo</span>
+                    <span class="text"><p><a href= "{{ url_for('login') }}">Inicia sesion</a> o <a href="{{ url_for('addUser') }}">Registrate</a> para comenzar.</p></span>
+                </div>
+            </div>
+        </div>
     </section>
 
     <footer>

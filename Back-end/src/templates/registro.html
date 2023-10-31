@@ -16,60 +16,75 @@
         </nav>
     </header>
     
-    <section class="register-form">
-        <h2>Registro</h2>
-        <form action="/addUser" method= "POST"> 
-                    <div class="row mb-3"> 
-                        <div class="col">
-                            <label>Nombre</label>
-                            <input type="text" class="form-control mb-3" name="name" required>
-                        </div>
-                        <div class="col">
-                            <label>Apellido Paterno</label>
-                            <input type="text" class="form-control mb-3" name="apellido_paterno" required>
-                        </div>
-                        <div class="col">
-                            <label>Apellido Materno</label>
-                            <input type="text" class="form-control mb-3" name="apellido_materno" required>
-                        </div>
-                        <div class="col">
-                            <label>Telefono</label>
-                            <input type="tel" class="form-control mb-3" name="telefono" required>
-                        </div>
-                        <div class="col">
-                            <label>Cumpleaños</label>
-                            <input type="date" class="form-control mb-3" name="cumpleanos" required>
-                        </div>
-                        <div class="col">
-                            <label>Correo</label>
-                            <input type="text" class="form-control mb-3" name="correo" required>
-                        </div>
-                        <div class="col">
-                            <label>Username</label>
-                            <input type="text" class="form-control mb-3" name="username" required>
-                        </div>
-                        <div class="col">
-                            <label>Contraseña</label>
-                            <input type="text" class="form-control mb-3" name="password" required>
-                        </div>
-                        <div class="col">
-                            <button class="btn btn-primary mb-3 mt-4" type="submit">Registrate</button>
-                        </div>
-                    </div>
+    <section class="space">
 
-                    <p>Si ya tienes una cuenta <a href= "{{ url_for('login') }}">Inicia sesion</a></p>
-                </form>
-                {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        <ul class="flash-messages">
-                            {% for message in messages %}
-                                <li>{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                {% endwith %}
-    </section>
+        <article class="form">
+            <form action="/addUser" method="POST">
+                <p class="titlelogin">Registrate</p>
+                <p class="message">Registrate para tener acceso</p>
+                    <div class="flex">
+                    <label>
+                        <input class="input" type="text" placeholder="" name="name" required>
+                        <span>Nombre</span>
+                    </label>
+            
+                    <label>
+                        <input class="input" type="text" placeholder="" name="apellido_paterno" required>
+                        <span>Apellido paterno</span>
+                    </label>
+                    
+                    <label>
+                        <input class="input" type="text" placeholder="" name="apellido_materno" required>
+                        <span>Apellido materno</span>
+                    </label>
         
+                    <label>
+                        <input class="input" type="tel" placeholder="" name="telefono" required>
+                        <span>Telefono</span>
+                    </label>
+                    </div>  
+                    <div class="input-down-box">
+                        <label>
+                            <input class="input" type="email" placeholder="" name="correo" required>
+                            <span>Correo electrónico</span>
+                        </label> 
+                            
+                        <label>
+                            <input class="input" type="date" placeholder="" name="cumpleanos" required>
+                            <span>Fecha de nacimiento</span>
+                        </label>
+                        <label>
+                            <input class="input" type="text" placeholder="" name="username" required>
+                            <span>Nombre de usuario</span>
+                        </label>
+                        <label>
+                            <input class="input" type="password" placeholder="" name="password" required>
+                            <span>Contraseña</span>
+                        </label>
+                        <button class="submit">Registrate</button>
+                        <p class="signin">¿Ya tienes una cuenta? <a href="{{ url_for('login') }}">Inicia sesion</a> </p>
+                    </div>
+                        
+            </form>
+        </article>
+    </section>
+
+                <div class="popup">
+                    <input type="checkbox" class="popup-checkbox" id="popup-toggle">
+                    <div class="popup-content">
+                        <label for="popup-toggle" class="close-btn">X</label>
+                        <ul class="flash-messages">
+                            {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <li>{{ message }}</li>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                        </ul>
+                    </div>
+                </div>
+
     <footer>
         <p>&copy; 2023 Majami</p>
     </footer>

@@ -20,61 +20,78 @@
             </ul>
         </nav>
     </header>
-    <div class="container">
-        <div class="card shadow">        
-            <div class="card-body">
+    
+                <!-- Tabla -->
+
                 <table class="table table-bordered">
-                    <thead>
+                    <Thead>
                         <th scope="col">#</th>
-                        <th scope="col">Título</th>
-                        <th scope="col">Contenido</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Nombre_de_Usuario</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido_Paterno</th>
+                        <th scope="col">Apellido_Materno</th>
+                        <th scope="col">Fecha_de_Nacimiento</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Contraseña</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
-                    </thead>
+                    </Thead>
+            
                     <tbody>
-                        <h1>Subir Imagen a MySQL</h1>
-                        <form method="POST" action="/subir" enctype="multipart/form-data">
-                            <label for="nombre">Nombre:</label>
-                            <input type="text" name="nombre" required>
-                            <br>
-                            <label for="imagen">Imagen:</label>
-                            <input type="file" name="imagen" accept=".jpg, .png, .jpeg" required>
-                            <br>
-                            <input type="submit" value="Subir Imagen">
-                    
-                        </form>
-                    
-                        <h2>Imágenes Subidas:</h2>
-                        <ul>
-                            {% for imagen in iconos %}
-                                <li>
-                                    {{ imagen[1] }}
-                                    <img src="/mostrar/{{ imagen[0] }}">Ver Imagen</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        <h1>Publicaciones recientes de {{session['nameUser']}}</h1>
-                        
-                        {% for d in data2 %}
-                            {% if d.user_id == session['user_id'] %}  {# Comprueba si el usuario es el autor del artículo #}
-                                <tr>
-                                    <td>{{d.id}}</td>
-                                    <td>{{d.title}}</td>
-                                    <td>{{d.content}}</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{d.id}}">Edit</button>
-                                    </td>
-                                    <td>
-                                        <a href="{{url_for("delete_article", id=d.id)}}" class="btn btn-danger btn-sm">Delete</a>
-                                    </td>
-                                </tr>
-                            {% endif %}
+                        {% for d in data %}
+                            <tr>
+                                <td>{{d.id}}</td>
+                                <td>{{d.correo}}</td>
+                                <td>{{d.username}}</td>
+                                <td>{{d.name}}</td>
+                                <td>{{d.apellido_paterno}}</td>
+                                <td>{{d.apellido_materno}}</td>
+                                <td>{{d.cumpleanos}}</td>
+                                <td>{{d.telefono}}</td>
+                                <td>{{d.password}}</td>
+                                <td><button class="btn btn-primary btn-sm" id="btn-edit{{d.id}}" data-bs-toggle="modal" data-bs-target="#modal{{d.id}}">Edit</button></td>
+                                <td><a href="{{url_for("delete",id=d.id)}}" class ="btn btn-danger btn-sm">Delete</td>
+                            </tr>
+
+                            <!--modal-->
+
+                            <div class="modal fade" id="modal{{d.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{d.correo}}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/edit/{{d.id}}" method="post" >
+                                                <label>Correo</label>
+                                                <input type="text" class="form-control mb-3" name="correo" value="{{d.correo}}">
+                                                <label>Nombre_de_Usuario</label>
+                                                <input type="text" class="form-control mb-3" name="username" value="{{d.username}}">
+                                                <label>Nombre</label>
+                                                <input type="text" class="form-control mb-3" name="name" value="{{d.name}}">
+                                                <label>Apellido_Paterno</label>
+                                                <input type="text" class="form-control mb-3" name="apellido_paterno" value="{{d.apellido_paterno}}">
+                                                <label>Apellido_Materno</label>
+                                                <input type="text" class="form-control mb-3" name="apellido_materno" value="{{d.apellido_materno}}">
+                                                <label>Fecha_de_Nacimiento</label>
+                                                <input type="date" class="form-control mb-3" name="cumpleanos" value="{{d.cumpleanos}}">
+                                                <label>Telefono</label>
+                                                <input type="tel" class="form-control mb-3" name="telefono" value="{{d.telefono}}">
+                                                <label>Contraseña</label>
+                                                <input type="text" class="form-control mb-3" name="password" value="{{d.password}}">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
                 <a href="{{ url_for('cerrar_sesion') }}">Cerrar_Sesion</a>    
     <footer>
         <p>&copy; 2023 Mi Blog</p>

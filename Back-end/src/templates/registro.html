@@ -15,9 +15,14 @@
             </ul>
         </nav>
     </header>
-    
+                                {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <li>{{ message }}</li>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
     <section class="space">
-
         <article class="form">
             <form action="/addUser" method="POST">
                 <p class="titlelogin">Registrate</p>
@@ -27,28 +32,24 @@
                         <input class="input" type="text" placeholder="" name="name" required>
                         <span>Nombre</span>
                     </label>
-            
                     <label>
                         <input class="input" type="text" placeholder="" name="apellido_paterno" required>
                         <span>Apellido paterno</span>
                     </label>
-                    
                     <label>
                         <input class="input" type="text" placeholder="" name="apellido_materno" required>
                         <span>Apellido materno</span>
                     </label>
-        
-                    <label>
-                        <input class="input" type="tel" placeholder="" name="telefono" required>
-                        <span>Telefono</span>
-                    </label>
                     </div>  
                     <div class="input-down-box">
+                        <label>
+                            <input class="input" type="tel" placeholder="" name="telefono" required>
+                            <span>Telefono</span>
+                        </label>
                         <label>
                             <input class="input" type="email" placeholder="" name="correo" required>
                             <span>Correo electrónico</span>
                         </label> 
-                            
                         <label>
                             <input class="input" type="date" placeholder="" name="cumpleanos" required>
                             <span>Fecha de nacimiento</span>
@@ -63,27 +64,12 @@
                         </label>
                         <button class="submit">Registrate</button>
                         <p class="signin">¿Ya tienes una cuenta? <a href="{{ url_for('login') }}">Inicia sesion</a> </p>
-                    </div>
-                        
+                    </div>   
             </form>
         </article>
     </section>
 
-                <div class="popup">
-                    <input type="checkbox" class="popup-checkbox" id="popup-toggle">
-                    <div class="popup-content">
-                        <label for="popup-toggle" class="close-btn">X</label>
-                        <ul class="flash-messages">
-                            {% with messages = get_flashed_messages() %}
-                                {% if messages %}
-                                    {% for message in messages %}
-                                        <li>{{ message }}</li>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endwith %}
-                        </ul>
-                    </div>
-                </div>
+
 
     <footer>
         <p>&copy; 2023 Majami</p>

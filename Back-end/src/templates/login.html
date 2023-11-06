@@ -15,7 +15,14 @@
             </ul>
         </nav>
     </header>
-    <section class="space">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+    <section class="spacelogin">
         <article class="form">
             <form action="/login" method="POST">
                 <p class="titlelogin">Inicio de sesion</p>

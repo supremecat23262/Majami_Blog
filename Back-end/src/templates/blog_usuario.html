@@ -3,35 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Majami - Blogs</title>
+    <title>Majami</title>
     <link rel="stylesheet" href="{{ url_for("static", filename="index.css") }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script>
+        // Función para abrir la ventana emergente
+        function openPopup() {
+            document.getElementById("popupContainer").style.display = "flex";
+        }
+
+        // Función para cerrar la ventana emergente
+        function closePopup() {
+            document.getElementById("popupContainer").style.display = "none";
+        }
+    </script>
 </head>
 <body>
     <header>
-        <a href="{{ url_for('publicaciones') }}"><img src="/static/logo3.webp" alt="Logo"></a>
+        <a href="{{ url_for('registradoinicio') }}">
+            <button class="button" data-text="Awesome">
+              <span class="actual-text">&nbsp;MAJAMI&nbsp;</span>
+              <span aria-hidden="true" class="front-text">&nbsp;MAJAMI&nbsp;</span>
+            </button>
+          </a>          
         <nav>
             <ul>
-                <li><a href="{{ url_for('publicaciones') }}">Inicio</a></li>
-                <li><a href="{{ url_for('registradoblog') }}">Blog</a></li>
+                <li><a href="{{ url_for('registradoinicio') }}">Inicio</a></li>
+                <li><a href="{{ url_for('registradoblog') }}">Mis Blogs</a></li>
                 <li><a href="{{ url_for('perfil') }}">Perfil</a></li>
             </ul>
         </nav>
     </header>
     
-    <section class="blog-list">
-        <tbody>
-            {% for d in data2 %}
-                <tr>
-                    <td>{{d.id}}</td>
-                    <td>{{d.title}}</td>
-                    <td>{{d.content}}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
+    <section class="intro">
+        <h2>Mis Blogs</h2>
     </section>
-    
+
+    <!-- Botón de Crear Blog -->
+    <button class="create-blog-button" onclick="openPopup()">Crear Blog</button>
+
+    <!-- Ventana emergente -->
+    <div class="popup-container" id="popupContainer">
+        <div class="popup">
+            <h2>Agregar Blog</h2>
+            <form action="/add_article" method="POST">
+                <label for="title">Título:</label>
+                <input type="text" id="title" name="title" required><br><br>
+                <label for="content">Contenido:</label>
+                <textarea id="content" name="content" rows="4" required></textarea><br><br>
+                <button class="publish-button" type="submit">Publicar</button>
+            </form>
+            <button onclick="closePopup()">Cerrar</button>
+        </div>
+    </div>
+
+                <!-- Tabla -->
+                <table class="table table-bordered">
+                    <thead>
+                        <th scope="col">#</th>
+                        <th scope="col">Título</th>
+                        <th scope="col">Contenido</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </thead>
+
+                    <tbody>
+                        
+                        {% for d in data2 %}
+                        {% if d.user_id == session['user_id'] %}  {# Comprueba si el usuario es el autor del artículo #}
+                            <tr>
+                                <td>{{d.id}}</td>
+                                <td>{{d.title}}</td>
+                                <td>{{d.content}}</td>
+                                <td><button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{d.id}}">Edit</button></td>
+                                <td><a href="{{url_for("delete_article", id=d.id)}}" class="btn btn-danger btn-sm">Delete</a></td>
+                            </tr>
+
+                            <!-- Modal de edición -->
+                            <div class="modal fade" id="modal{{d.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{d.title}}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{url_for('edit_article', id=d.id)}}" method="post">
+                                                <label>Título</label>
+                                                <input type="text" class="form-control mb-3" name="title" value="{{d.title}}">
+                                                <label>Contenido</label>
+                                                <input type="text" class="form-control mb-3" name="content" value="{{d.content}}">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>   
     <footer>
-        <p>&copy; 2023 Majami</p>
+        <p>&copy; 2023 Mi Blog</p>
     </footer>
 </body>
 </html>

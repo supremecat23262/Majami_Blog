@@ -60,56 +60,17 @@
         </div>
     </div>
 
-    
-                <!-- Tabla -->
-                <table class="table table-bordered">
-                    <thead>
-                        <th scope="col">#</th>
-                        <th scope="col">Título</th>
-                        <th scope="col">Contenido</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                    </thead>
-
+                <section class="blog-list">
                     <tbody>
-
-                        <h1>Página de inicio de usuario</h1>
-                        
                         {% for d in data2 %}
                             <tr>
                                 <td>{{d.id}}</td>
                                 <td>{{d.title}}</td>
                                 <td>{{d.content}}</td>
-                                <td><button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{d.id}}">Edit</button></td>
-                                <td><a href="{{url_for("delete_article", id=d.id)}}" class="btn btn-danger btn-sm">Delete</a></td>
                             </tr>
-
-                            <!-- Modal de edición -->
-                            <div class="modal fade" id="modal{{d.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{d.title}}</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="{{url_for('edit_article', id=d.id)}}" method="post">
-                                                <label>Título</label>
-                                                <input type="text" class="form-control mb-3" name="title" value="{{d.title}}">
-                                                <label>Contenido</label>
-                                                <input type="text" class="form-control mb-3" name="content" value="{{d.content}}">
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Save changes</button>
-                                        </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
                         {% endfor %}
                     </tbody>
-                </table>
-
+                </section>
             <input type="checkbox" id="cookie-accept">
             <div class="cookie-card">
                 <span class="title">🍪 Cookie Notice</span>

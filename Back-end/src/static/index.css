@@ -416,6 +416,13 @@
   min-height: 80vh;
 }
 
+.spacelogin {
+  background-image: linear-gradient(to right, #24272b, #4a525a);
+  display: block;
+  padding-block: 8rem;
+  min-height: 8vh;
+}
+
 .form {
   margin: 0 auto;
   display: flex;
@@ -564,4 +571,39 @@
   }
 }
 
+/*estilos datos perfil*/
+.edit-popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
 
+.edit-popup label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.edit-button {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.cancel-button {
+  cursor: pointer;
+  background-color: #ccc;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
